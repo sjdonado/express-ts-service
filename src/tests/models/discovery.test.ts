@@ -1,10 +1,10 @@
+import ApiError from '@utils/ApiError';
+
 import {
   getFlightKey,
   mergeAndClean,
   fetchAndRetry,
-  cacheStore,
 } from '@models/discovery';
-import ApiError from '@utils/ApiError';
 
 import {
   RESPONSE_SOURCE1,
@@ -44,8 +44,7 @@ describe('Discovery model', () => {
       expect(output[1]).toHaveLength(10);
     });
 
-    it('Should retry 2 times', async () => {
-      cacheStore.clear();
+    it('Should retry 1 time', async () => {
       fetchMock.mockResponses(
         ['Service Unavailable', { status: 503 }],
         ['Service Unavailable', { status: 503 }],
@@ -60,8 +59,7 @@ describe('Discovery model', () => {
       expect(output[1]).toHaveLength(10);
     });
 
-    it('Should retry 4 times', async () => {
-      cacheStore.clear();
+    it('Should retry 3 times', async () => {
       fetchMock.mockAbort();
 
       expect(fetchAndRetry).rejects.toThrow(new ApiError(503, 'External APIs unavailable'));

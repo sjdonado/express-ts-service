@@ -1,4 +1,4 @@
-import fetch, { HeadersInit } from 'node-fetch';
+import fetch from 'node-fetch';
 
 import { API_URL, API_USERNAME, API_PASSWORD } from '@config/index';
 import { Discovery } from '@interfaces/discovery';
@@ -6,7 +6,7 @@ import { Discovery } from '@interfaces/discovery';
 class ApiConsumer {
   private baseURL: string;
 
-  private headers: HeadersInit;
+  private headers: Record<string, string>;
 
   constructor() {
     this.baseURL = API_URL;

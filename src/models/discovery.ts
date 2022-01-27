@@ -1,12 +1,11 @@
 import { Discovery, Flight, Slice } from '@interfaces/discovery';
+import ApiError from '@utils/ApiError';
 import ApiConsumer from '@services/ApiConsumer';
 
-import ApiError from '@utils/ApiError';
-
-export const cacheStore = new Map();
+const cacheStore: Map<string, Flight[]> = new Map();
 const apiConsumer = new ApiConsumer();
 
-export function getFlightKey(slices: Slice[]) {
+export function getFlightKey(slices: Slice[]): string {
   let flightKey = '';
   slices.forEach((slice) => {
     flightKey += `${slice.flight_number},${slice.departure_date_time_utc}|`;
@@ -31,7 +30,7 @@ export function mergeAndClean(source1Flights: Flight[], source2Flights: Flight[]
   return { flights };
 }
 
-export const fetchAndRetry = async (attemps = 0) => {
+export const fetchAndRetry = async (attemps = 0): Promise<[Flight[], Flight[]]> => {
   let retry = false;
   const source1Key = `1|${(Date.now() / 1000).toFixed()}`;
   const source2Key = `2|${(Date.now() / 1000).toFixed()}`;
@@ -57,12 +56,17 @@ export const fetchAndRetry = async (attemps = 0) => {
   }
 
   if (retry) {
-    if (attemps === 3) {
+    if (attemps === 2) {
       throw new ApiError(503, 'External APIs unavailable');
     }
 
     return fetchAndRetry(attemps + 1);
   }
 
-  return Array.from(cacheStore.values());
+  const source1Flights = cacheStore.get(source1Key);
+  const source2Flights = cacheStore.get(source2Key);
+
+  cacheStore.clear();
+
+  return [source1Flights, source2Flights];
 };

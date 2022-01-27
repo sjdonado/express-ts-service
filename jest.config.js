@@ -4,9 +4,9 @@ const { compilerOptions } = require('./tsconfig.json');
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  roots: ['<rootDir>/src', '<rootDir>/tests'],
+  roots: ['<rootDir>/src'],
   setupFiles: [
-    "<rootDir>/tests/setup.ts"
+    "<rootDir>/src/tests/setup.ts"
   ],
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
@@ -16,7 +16,7 @@ module.exports = {
   coverageDirectory: 'coverage',
   coveragePathIgnorePatterns: [
     'node_modules',
-    './tests/mocks.ts',
+    './src/tests/mocks.ts',
   ],
   coverageProvider: 'v8',
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/src' }),
