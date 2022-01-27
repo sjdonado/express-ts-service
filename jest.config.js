@@ -5,6 +5,9 @@ module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   roots: ['<rootDir>/src', '<rootDir>/tests'],
+  setupFiles: [
+    "<rootDir>/tests/setup.ts"
+  ],
   transform: {
     '^.+\\.tsx?$': 'ts-jest',
   },
@@ -12,7 +15,8 @@ module.exports = {
   collectCoverage: true,
   coverageDirectory: 'coverage',
   coveragePathIgnorePatterns: [
-    '/node_modules/',
+    'node_modules',
+    './tests/mocks.ts',
   ],
   coverageProvider: 'v8',
   moduleNameMapper: pathsToModuleNameMapper(compilerOptions.paths, { prefix: '<rootDir>/src' }),

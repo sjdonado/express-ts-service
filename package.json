@@ -8,12 +8,13 @@
     "build": "tsc && tsc-alias",
     "dev": "cross-env NODE_ENV=development nodemon",
     "start": "npm run build && cross-env NODE_ENV=production node dist/index.js",
-    "test": "jest --forceExit"
+    "test": "jest --forceExit --runInBand"
   },
   "dependencies": {
     "dotenv": "^14.3.2",
     "express": "^4.17.2",
     "morgan": "^1.10.0",
+    "node-fetch": "^3.2.0",
     "pino": "^7.6.4",
     "pino-pretty": "^7.5.1"
   },
@@ -30,6 +31,7 @@
     "eslint-config-airbnb-typescript": "^16.1.0",
     "eslint-plugin-import": "^2.25.4",
     "jest": "^27.4.7",
+    "jest-fetch-mock": "^3.0.3",
     "nodemon": "^2.0.15",
     "supertest": "^6.2.2",
     "ts-jest": "^27.1.3",
